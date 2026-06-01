@@ -2,6 +2,7 @@ import { Header } from "./components/Header/index"
 import { Tip } from "./components/Tip/index"
 import { Palpite } from "./components/Palpite"
 import { Letter } from "./components/Letter"
+import { LetterUsed } from "./components/LetterUsed"
 
 import styles from "./app.module.css"
 
@@ -28,6 +29,9 @@ export default function App(){
 
         <Palpite />
 
+        <div>
+          <LetterUsed />
+        </div>
       </main>
     </div>
   )
