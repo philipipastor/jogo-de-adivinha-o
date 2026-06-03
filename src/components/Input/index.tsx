@@ -1,7 +1,11 @@
 import styles from "./style.module.css"
 
-export function Input(){
+type Props = React.ComponentProps<"input"> &{
+    value?: string
+}
+
+export function Input({value, ...rest}: Props){
     return (
-        <input type="text" className={styles.input} autoFocus maxLength={1} placeholder="?"/>
+        <input type="text" className={styles.input} value={value}{...rest}/>
     )
 }
