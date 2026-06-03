@@ -1,11 +1,11 @@
 import style from "./style.module.css"
 
-type Props = {
+type Props = React.ComponentProps<"button"> & {
     title: string
 }
 
-export function Button({title}: Props){
+export function Button({title, ...rest}: Props){
     return(
-        <button type="button" className={style.button}>{title}</button>
+        <button type="button" className={style.button} {...rest}>{title}</button>
     )
 }
