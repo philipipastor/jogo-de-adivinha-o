@@ -17,6 +17,8 @@ export default function App(){
   const [letter, setLetter] = useState("")
   const [challenge, setChallenge] = useState<Challenge | null>(null)
 
+  const attemptsLimit = 5
+
   function startGame() {
     const index = Math.floor(Math.random() * WORDS.length)
     const randomWord = WORDS[index]
@@ -29,6 +31,14 @@ export default function App(){
 
   }
 
+  function handleRestart() {
+    const confirmRestart = window.confirm("Tem certeza que deseja reiniciar o jogo?")
+
+    if(confirmRestart){
+      startGame()
+    }
+  }
+  
   function handleConfirm(){
 
     if(!challenge){
@@ -48,13 +58,14 @@ export default function App(){
     
     const correct = challenge.word.toUpperCase().includes(value)
 
-    if(!correct){
-      setAttempts(attempts + 1)
-    }
+    
+    setAttempts(attempts + 1)
+    
 
-    if(attempts + 1 >= 10 ) {
+    if(attempts >= challenge.word.length + attemptsLimit ) {
       alert("Você perdeu, o jogo será reiniciado")
       startGame()
+      return
     }
 
     setLetterUsed((prevState) => [...prevState, {value, correct: correct}])
@@ -74,19 +85,19 @@ export default function App(){
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={10} onRestart={startGame}/>
+        <Header current={attempts} max={challenge.word.length + attemptsLimit} onRestart={handleRestart}/>
         
         <Tip textoDica={challenge.tip}/>
         
         <div className={styles.word}>
         {
-          challenge.word.split("").map((letter) => {
+          challenge.word.split("").map((letter, index) => {
             const letterCorrect = letterUsed.some(
               used => used.value.toUpperCase() === letter.toUpperCase() && used.correct
             )
 
             return (
-              <Letter value={letterCorrect ? letter : ""} />
+              <Letter key={index} value={letterCorrect ? letter : ""} color={letterCorrect ? "correct" : "default"}/>
             )
           })
         }
