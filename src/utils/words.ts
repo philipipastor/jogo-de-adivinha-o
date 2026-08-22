@@ -16,5 +16,4 @@ export const WORDS: Challenge[] = [
   { id: 5, word: "Typescript", tip: "Para adicionar tipagem no Javascript" },
   {id: 6, word: "Pulga", tip: "Faz o cachorro se coçar"},
   {id: 7, word: "Carrapato", tip: "Chupa o sangue do animal"},
-  {id: 8, word: "Thaina", tip: "Quem reclama muito mas eu amo"},
 ]
