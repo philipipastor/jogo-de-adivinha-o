@@ -47,6 +47,7 @@ export default function App(){
 
     if(!letter.trim()) {
       alert("Digite uma letra!")
+      return
     }
 
     const value = letter.toUpperCase()
