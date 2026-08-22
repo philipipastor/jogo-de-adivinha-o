@@ -12,7 +12,7 @@ import styles from "./app.module.css"
 
 export default function App(){
 
-  const [attempts, setAttempts] = useState(0)
+  const [discoveredLetters, setdiscoveredLetters] = useState(0)
   const [letterUsed, setLetterUsed] = useState<LetterUsedProps[]>([])
   const [letter, setLetter] = useState("")
   const [challenge, setChallenge] = useState<Challenge | null>(null)
@@ -25,7 +25,7 @@ export default function App(){
 
     setChallenge(randomWord)
 
-    setAttempts(0) 
+    setdiscoveredLetters(0) 
     setLetter("")
     setLetterUsed([])
 
@@ -61,17 +61,10 @@ export default function App(){
 
     const hits = challenge.word.toUpperCase().split("").filter((char) => char === value).length
   
-    if(attempts === challenge.word.length + attemptsLimit){
-      alert("Você perdeu, o jogo será reiniciado")
-      startGame()
-      return
-    }
-    
     setLetterUsed((prevState) => [...prevState, {value, correct: correct}])
-    setAttempts(attempts + hits)
-    console.log(attempts)
+    setdiscoveredLetters(discoveredLetters + hits)
+    console.log(discoveredLetters)
     setLetter("")
-
   }
 
   function endGame(message: string){
@@ -88,13 +81,13 @@ export default function App(){
       return
     }
     setTimeout(() => {
-      if (attempts === challenge.word.length) {
+      if (discoveredLetters === challenge.word.length) {
         return endGame("Parabéns, você descobriu a palavra!")
       } else if (letterUsed.length >= challenge.word.length + attemptsLimit) {
         return endGame("Que pena, você usou todas as tentativas!")
       }
     }, 200)
-  }, [attempts, letterUsed.length])
+  }, [discoveredLetters, letterUsed.length])
 
   if(!challenge){
     return
