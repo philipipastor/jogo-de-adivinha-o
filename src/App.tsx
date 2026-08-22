@@ -53,48 +53,48 @@ export default function App(){
     const value = letter.toUpperCase()
 
     if(letterUsed.find(used => used.value.toUpperCase() === value)){
-      alert("Você já usou essa letra!")
+      alert("Você já usou essa letra!" + value)
       return
     }
     
     const correct = challenge.word.toUpperCase().includes(value)
 
-    const newLetterUsed = [...letterUsed, {value,correct}]
-
-    const completed = challenge.word
-        .toUpperCase()
-        .split("")
-        .every((letter) =>
-            newLetterUsed.some(
-                (used) =>
-                    used.value.toUpperCase() === letter &&
-                    used.correct
-            )
-        )
-
-    if(completed){
-      alert("Parabéns, você acertou a palavra!")
-      startGame()
-      return
-    }
-    
-    setAttempts(attempts + 1)
-
-    if(attempts >= challenge.word.length + attemptsLimit ) {
+    const hits = challenge.word.toUpperCase().split("").filter((char) => char === value).length
+  
+    if(attempts === challenge.word.length + attemptsLimit){
       alert("Você perdeu, o jogo será reiniciado")
       startGame()
       return
     }
-
+    
     setLetterUsed((prevState) => [...prevState, {value, correct: correct}])
-
+    setAttempts(attempts + hits)
+    console.log(attempts)
     setLetter("")
 
+  }
+
+  function endGame(message: string){
+    alert(message)
+    startGame()
   }
 
   useEffect(() => {
     startGame()
   }, [])
+
+    useEffect(() => {
+    if (!challenge) {
+      return
+    }
+    setTimeout(() => {
+      if (attempts === challenge.word.length) {
+        return endGame("Parabéns, você descobriu a palavra!")
+      } else if (letterUsed.length >= challenge.word.length + attemptsLimit) {
+        return endGame("Que pena, você usou todas as tentativas!")
+      }
+    }, 200)
+  }, [attempts, letterUsed.length])
 
   if(!challenge){
     return
@@ -103,7 +103,7 @@ export default function App(){
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={challenge.word.length + attemptsLimit} onRestart={handleRestart}/>
+        <Header current={letterUsed.length} max={challenge.word.length + attemptsLimit} onRestart={handleRestart}/>
         
         <Tip textoDica={challenge.tip}/>
         
