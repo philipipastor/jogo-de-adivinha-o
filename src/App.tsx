@@ -59,9 +59,26 @@ export default function App(){
     
     const correct = challenge.word.toUpperCase().includes(value)
 
+    const newLetterUsed = [...letterUsed, {value,correct}]
+
+    const completed = challenge.word
+        .toUpperCase()
+        .split("")
+        .every((letter) =>
+            newLetterUsed.some(
+                (used) =>
+                    used.value.toUpperCase() === letter &&
+                    used.correct
+            )
+        )
+
+    if(completed){
+      alert("Parabéns, você acertou a palavra!")
+      startGame()
+      return
+    }
     
     setAttempts(attempts + 1)
-    
 
     if(attempts >= challenge.word.length + attemptsLimit ) {
       alert("Você perdeu, o jogo será reiniciado")
