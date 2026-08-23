@@ -16,6 +16,7 @@ export default function App(){
   const [letterUsed, setLetterUsed] = useState<LetterUsedProps[]>([])
   const [letter, setLetter] = useState("")
   const [challenge, setChallenge] = useState<Challenge | null>(null)
+  const [shake, setChake] = useState(false)
 
   const attemptsLimit = 5
 
@@ -65,6 +66,11 @@ export default function App(){
     setdiscoveredLetters(discoveredLetters + hits)
     console.log(discoveredLetters)
     setLetter("")
+
+    if(!correct) {
+      setChake(true)
+      setTimeout(() => setChake(false), 300);
+    }
   }
 
   function endGame(message: string){
@@ -100,7 +106,7 @@ export default function App(){
         
         <Tip textoDica={challenge.tip}/>
         
-        <div className={styles.word}>
+        <div className={`${styles.word} ${shake && styles.shake}`}>
         {
           challenge.word.split("").map((letter, index) => {
             const letterCorrect = letterUsed.some(
