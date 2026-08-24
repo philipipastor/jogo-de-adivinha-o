@@ -53,8 +53,8 @@ export default function App(){
 
     const value = letter.toUpperCase()
 
-    if(letterUsed.find(used => used.value.toUpperCase() === value)){
-      alert("Você já usou essa letra!" + value)
+    if(letterUsed.some(used => used.value.toUpperCase() === value)){
+      alert(`Essa letra já foi utilizada! ${value}`)
       return
     }
     
@@ -64,7 +64,6 @@ export default function App(){
   
     setLetterUsed((prevState) => [...prevState, {value, correct: correct}])
     setdiscoveredLetters(discoveredLetters + hits)
-    console.log(discoveredLetters)
     setLetter("")
 
     if(!correct) {
@@ -83,16 +82,16 @@ export default function App(){
   }, [])
 
     useEffect(() => {
-    if (!challenge) {
-      return
-    }
-    setTimeout(() => {
-      if (discoveredLetters === challenge.word.length) {
-        return endGame("Parabéns, você descobriu a palavra!")
-      } else if (letterUsed.length >= challenge.word.length + attemptsLimit) {
-        return endGame("Que pena, você usou todas as tentativas!")
+      if (!challenge) {
+        return
       }
-    }, 200)
+      setTimeout(() => {
+        if (discoveredLetters === challenge.word.length) {
+          return endGame("Parabéns, você descobriu a palavra!")
+        } else if (letterUsed.length >= challenge.word.length + attemptsLimit) {
+          return endGame("Que pena, você usou todas as tentativas!")
+        }
+      }, 200)
   }, [discoveredLetters, letterUsed.length])
 
   if(!challenge){
